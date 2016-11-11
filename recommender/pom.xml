@@ -27,6 +27,34 @@
 			<version>4.12</version>
 		</dependency>
 	
+		<!-- Hibernate for O/R mapping -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>5.2.4.Final</version>
+		</dependency>
+		
+		<!-- Hibernate Spatial extension -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-spatial</artifactId>
+		    <version>5.2.4.Final</version>
+		</dependency>
+		
+		<!-- Hibernate JPA implementation -->
+		<dependency>
+		    <groupId>org.hibernate.javax.persistence</groupId>
+		    <artifactId>hibernate-jpa-2.1-api</artifactId>
+		    <version>1.0.0.Final</version>
+		</dependency>
+		
+		<!-- PostgreSQL JDBC driver -->
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>9.4-1202-jdbc42</version>
+		</dependency>
+	
 	</dependencies>
 	
 	<build>
