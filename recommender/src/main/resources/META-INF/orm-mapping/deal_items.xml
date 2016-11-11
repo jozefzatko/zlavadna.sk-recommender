@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+				 http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd" version="2.1">
+
+	<entity class="sk.zatko.vi.recommender.models.DealItem" name="DealItem">
+	
+	<table name="dealitems">
+		<index name="deal_id_index" column-list="deal_id"></index>
+		<index name="coupon_begin_date_index" column-list="coupon_begin_date"></index>
+		<index name="coupon_end_date_index" column-list="coupon_end_date"></index>
+	</table>
+	
+		<attributes>
+		
+			<id name="id"></id>
+			
+			<basic name="title">
+				<column name="title" length="1000"/>
+			</basic>
+			
+			<basic name="couponText1">
+				<column name="coupon_text1" length="5000"/>
+			</basic>
+			
+			<basic name="couponText2">
+				<column name="coupon_text2" length="5000"/>
+			</basic>
+			
+			<basic name="couponBeginDate">
+				<column name="coupon_begin_date"/>
+			</basic>
+			
+			<basic name="couponEndDate">
+				<column name="coupon_end_date"/>
+			</basic>
+			
+			<many-to-one name="deal">
+				 <join-column name="deal_id"/>
+			</many-to-one>
+			
+			<one-to-many name="activities" target-entity="sk.zatko.vi.recommender.models.Activity" mapped-by="dealItem"/>
+			
+		</attributes>
+		
+	</entity>
+
+</entity-mappings>

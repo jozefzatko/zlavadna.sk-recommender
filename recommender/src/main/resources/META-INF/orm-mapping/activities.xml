@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+				 http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd" version="2.1">
+
+	<entity class="sk.zatko.vi.recommender.models.Activity" name="Activity">
+	
+	<table name="activities">
+		<index name="user_id_index" column-list="user_id"></index>
+		<index name="deal_item_id_index" column-list="deal_item_id"></index>
+		<index name="deal_id_index" column-list="deal_id"></index>
+		<index name="price_index" column-list="price"></index>
+	</table>
+	
+		<attributes>
+		
+			<id name="id"></id>
+			
+			<basic name="quantity">
+				<column name="quantity"/>
+			</basic>
+			
+			<basic name="price">
+				<column name="price"/>
+			</basic>
+			
+			<basic name="createdAt">
+				<column name="created_at"/>
+			</basic>
+			
+			<many-to-one name="user">
+				 <join-column name="user_id"/>
+			</many-to-one>
+			
+			<many-to-one name="dealItem">
+				 <join-column name="deal_item_id"/>
+			</many-to-one>
+			
+			<many-to-one name="deal">
+				 <join-column name="deal_id"/>
+			</many-to-one>
+			
+		</attributes>
+
+	</entity>
+
+</entity-mappings>

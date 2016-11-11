@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+				 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+				 http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd" version="2.1">
+
+	<entity class="sk.zatko.vi.recommender.models.Deal" name="Deal">
+	
+	<table name="deals">
+		<index name="partner_id_index" column-list="partner_id"></index>
+		<index name="location_index" column-list="location"></index>
+	</table>
+	
+		<attributes>
+		
+			<id name="id"></id>
+				
+			<basic name="title">
+				<column name="title" length="1000"/>
+			</basic>
+			
+			<basic name="description">
+				<column name="description" length="2000"/>
+			</basic>
+			
+			<basic name="city">
+				<column name="city"/>
+			</basic>
+			
+			<basic name="partnerId">
+				<column name="partner_id"/>
+			</basic>
+			
+			<basic name="location">
+				<column name="location"/>
+			</basic>
+			
+			<one-to-many name="dealItems" target-entity="sk.zatko.vi.recommender.models.DealItem" mapped-by="deal"/>
+			
+			<one-to-many name="activities" target-entity="sk.zatko.vi.recommender.models.Activity" mapped-by="deal"/>
+			
+		</attributes>
+		
+	</entity>
+
+</entity-mappings>
