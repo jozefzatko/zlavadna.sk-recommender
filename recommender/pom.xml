@@ -54,6 +54,13 @@
 		    <artifactId>postgresql</artifactId>
 		    <version>9.4-1202-jdbc42</version>
 		</dependency>
+		
+		<!-- OpenCSV to manipulate with CSV files -->
+		<dependency>
+		    <groupId>com.opencsv</groupId>
+		    <artifactId>opencsv</artifactId>
+		    <version>3.8</version>
+		</dependency>
 	
 	</dependencies>
 	
