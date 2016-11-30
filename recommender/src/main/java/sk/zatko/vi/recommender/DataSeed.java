@@ -49,10 +49,8 @@ public class DataSeed {
 			logger.info("Data seed from train_activity.csv to train_db.users completed");
 			
 		} catch (NumberFormatException | IOException e) {
-			logger.error("Error while seeding train database");
-			logger.error(e.getLocalizedMessage());
-			logger.error(e);
-			e.printStackTrace();
+			logger.error("Error while seeding train database", e);
+			System.exit(1);
 		} finally {
 			entityManager.close();
 		}
@@ -80,10 +78,8 @@ public class DataSeed {
 			logger.info("Data seed from test_activity.csv to test_db.users completed");
 			
 		} catch (NumberFormatException | IOException e) {
-			logger.error("Error while seeding test database");
-			logger.error(e.getLocalizedMessage());
-			logger.error(e);
-			e.printStackTrace();
+			logger.error("Error while seeding train database", e);
+			System.exit(1);
 		} finally {
 			entityManager.close();
 		}
