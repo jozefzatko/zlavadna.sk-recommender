@@ -1,0 +1,67 @@
+{
+	"settings": {
+		"analysis": {
+			"filter": {
+				"lemmagen_filter_sk": {
+					"type": "lemmagen",
+					"lexicon": "sk"
+				},
+				"sk_SK" : {
+					"type" : "hunspell",
+					"locale" : "sk_SK",
+					"dedup" : true,
+					"recursion_level" : 0
+				},
+				"synonym_filter": {
+					"type": "synonym",
+					"synonyms_path": "synonyms/sk_SK.txt",
+					"ignore_case": true
+				},
+				"stopwords_SK": {
+					"type": "stop",
+					"stopwords_path": "stop-words/stop-words-slovak.txt",
+					"ignore_case": true
+				}
+			},
+			"analyzer": {
+				"slovak_standard_analyzer": {
+					"type": "custom",
+					"tokenizer": "standard",
+					"filter": [
+						"stopwords_SK",
+						"lemmagen_filter_sk",
+						"lowercase",
+						"asciifolding",
+						"stopwords_SK"
+					]
+				},
+				"slovak_synonym_analyzer": {
+					"type": "custom",
+					"tokenizer": "standard",
+					"filter": [
+						"stopwords_SK",
+						"lemmagen_filter_sk",
+						"lowercase",
+						"synonym_filter",
+						"asciifolding",
+						"stopwords_SK"
+					]
+				}
+			}
+		}
+	},
+	"mappings": {
+		"deal": {
+			"properties": {
+				"title": {
+					"type": "string",
+					"analyzer": "slovak_synonym_analyzer"
+				},
+				"description": {
+					"type": "string",
+					"analyzer": "slovak_synonym_analyzer"
+				}
+			}
+		}
+	}
+}

@@ -2,15 +2,16 @@ package sk.zatko.vi.recommender.models;
 
 import java.util.Set;
 
+import com.google.gson.annotations.Expose;
 import com.vividsolutions.jts.geom.Point;
 
 public class Deal {
 
-	private int id;
+	@Expose private int id;
 	private Set<DealItem> dealItems;
 	private Set<Activity> activities;
-	private String title;
-	private String description;
+	@Expose private String title;
+	@Expose private String description;
 	private String city;
 	private int partnerId;
 	
