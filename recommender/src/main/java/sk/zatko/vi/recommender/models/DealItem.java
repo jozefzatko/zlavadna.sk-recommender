@@ -14,6 +14,9 @@ public class DealItem {
 	private Date couponBeginDate;
 	private Date couponEndDate;
 
+	private boolean inTrain;
+	private boolean inTest;
+	
 	public int getId() {
 		return id;
 	}
@@ -68,6 +71,20 @@ public class DealItem {
 	}
 	public void setCouponEndDate(Date couponEndDate) {
 		this.couponEndDate = couponEndDate;
+	}
+	
+	public boolean isInTrain() {
+		return inTrain;
+	}
+	public void setInTrain(boolean inTrain) {
+		this.inTrain = inTrain;
+	}
+	
+	public boolean isInTest() {
+		return inTest;
+	}
+	public void setInTest(boolean inTest) {
+		this.inTest = inTest;
 	}
 
 }

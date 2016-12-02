@@ -16,21 +16,21 @@ public abstract class CSVParser {
 	private static final char CSV_QUOTE_CHAR = '"';
 	
 	protected EntityManager entityManager;
-	private String csvFile;
 	
-	protected CSVReader reader;
+	protected CSVReader trainReader;
+	protected CSVReader testReader;
 	
-	public CSVParser(EntityManager entityManager, String csvFile) throws FileNotFoundException, UnsupportedEncodingException {
+	public CSVParser(EntityManager entityManager, String trainCsvFile, String testCsvFile) throws FileNotFoundException, UnsupportedEncodingException {
 		
 		this.entityManager = entityManager;
-		this.csvFile = csvFile;
 		
-		reader = initReader();
+		this.trainReader = initReader(trainCsvFile);
+		this.testReader = initReader(testCsvFile);
 	}
 	
-	protected CSVReader initReader() throws FileNotFoundException, UnsupportedEncodingException {
+	protected CSVReader initReader(String file) throws FileNotFoundException, UnsupportedEncodingException {
 		
-		return new CSVReader(new InputStreamReader(new FileInputStream(this.csvFile), "UTF-8"), CSV_DELIMITER, CSV_QUOTE_CHAR, 1);
+		return new CSVReader(new InputStreamReader(new FileInputStream(file), "UTF-8"), CSV_DELIMITER, CSV_QUOTE_CHAR, 1);
 	}
 	
 	protected String[] removeNulls(String csvLine[]) {

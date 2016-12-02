@@ -9,7 +9,9 @@ public class Activity {
 	private DealItem dealItem;
 	private Deal deal;
 	private int quantity;
-	private double price;
+	private double marketPrice;
+	private double teamPrice;
+	private double discount;
 	private Date createdAt;
 	
 	public int getId() {
@@ -47,11 +49,25 @@ public class Activity {
 		this.quantity = quantity;
 	}
 	
-	public double getPrice() {
-		return price;
+	public double getMarketPrice() {
+		return marketPrice;
 	}
-	public void setPrice(double price) {
-		this.price = price;
+	public void setMarketPrice(double marketPrice) {
+		this.marketPrice = marketPrice;
+	}
+	
+	public double getTeamPrice() {
+		return teamPrice;
+	}
+	public void setTeamPrice(double teamPrice) {
+		this.teamPrice = teamPrice;
+	}
+	
+	public double getDiscount() {
+		return discount;
+	}
+	public void setDiscount(double discount) {
+		this.discount = discount;
 	}
 	
 	public Date getCreatedAt() {
@@ -60,5 +76,5 @@ public class Activity {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	
+
 }

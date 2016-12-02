@@ -10,6 +10,8 @@
 		<index name="deal_id_index" column-list="deal_id"></index>
 		<index name="coupon_begin_date_index" column-list="coupon_begin_date"></index>
 		<index name="coupon_end_date_index" column-list="coupon_end_date"></index>
+		<index name="in_train_index" column-list="in_train"></index>
+		<index name="in_test_index" column-list="in_test"></index>
 	</table>
 	
 		<attributes>
@@ -34,6 +36,14 @@
 			
 			<basic name="couponEndDate">
 				<column name="coupon_end_date"/>
+			</basic>
+			
+			<basic name="inTrain">
+				<column name="in_train"/>
+			</basic>
+			
+			<basic name="inTest">
+				<column name="in_test"/>
 			</basic>
 			
 			<many-to-one name="deal">

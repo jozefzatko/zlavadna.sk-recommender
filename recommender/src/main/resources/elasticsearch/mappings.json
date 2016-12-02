@@ -60,6 +60,18 @@
 				"description": {
 					"type": "string",
 					"analyzer": "slovak_synonym_analyzer"
+				},
+				"in_test": {
+					"type": "boolean"
+				},
+				"in_train": {
+					"type": "boolean"
+				},
+				"begin_date": {
+					"type": "date"
+				},
+				"end_date": {
+					"type": "date"
 				}
 			}
 		}

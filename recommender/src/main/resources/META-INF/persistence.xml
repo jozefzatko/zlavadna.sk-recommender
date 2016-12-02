@@ -5,7 +5,7 @@
              version="2.1">
 
 	<!-- TRAIN DATABASE -->
-	<persistence-unit name="train_db" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="db" transaction-type="RESOURCE_LOCAL">
 		
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
@@ -17,7 +17,7 @@
 		<properties>
 
 			<!-- JDBC properties -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/vi_recommender_train"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/vi_recommender"/>
 			<property name="javax.persistence.jdbc.user" value="postgres" />
 			<property name="javax.persistence.jdbc.password" value="password" />
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
@@ -28,38 +28,7 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect" />
 			<property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
 			<property name="hibernate.archive.autodetection" value="class" />
-			<property name="hibernate.hbm2ddl.auto" value="create"/>
-			
-		</properties>
-		
-	</persistence-unit>
-	
-	
-	<!-- TEST DATABASE -->
-	<persistence-unit name="test_db" transaction-type="RESOURCE_LOCAL">
-		
-		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
-		<mapping-file>META-INF/orm-mapping/deals.xml</mapping-file>
-		<mapping-file>META-INF/orm-mapping/deal_items.xml</mapping-file>
-		<mapping-file>META-INF/orm-mapping/activities.xml</mapping-file>
-		<mapping-file>META-INF/orm-mapping/users.xml</mapping-file>
-
-		<properties>
-
-			<!-- JDBC properties -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/vi_recommender_test"/>
-			<property name="javax.persistence.jdbc.user" value="postgres" />
-			<property name="javax.persistence.jdbc.password" value="password" />
-			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-
-			<!-- Hibernate properties -->
-			<property name="hibernate.show_sql" value="false" />
-			<property name="hibernate.format_sql" value="false" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect" />
-			<property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
-			<property name="hibernate.archive.autodetection" value="class" />
-			<property name="hibernate.hbm2ddl.auto" value="create"/>
+			<property name="hibernate.hbm2ddl.auto" value="none"/>
 			
 		</properties>
 		

@@ -8,7 +8,11 @@
 	
 	<table name="deals">
 		<index name="partner_id_index" column-list="partner_id"></index>
-		<index name="location_index" column-list="location"></index>
+		<index name="location_index" column-list="location"></index>	
+		<index name="in_train_index" column-list="in_train"></index>
+		<index name="in_test_index" column-list="in_test"></index>
+		<index name="begin_date_index" column-list="begin_date"></index>
+		<index name="end_date_index" column-list="end_date"></index>
 	</table>
 	
 		<attributes>
@@ -33,6 +37,22 @@
 			
 			<basic name="location">
 				<column name="location"/>
+			</basic>
+			
+			<basic name="inTrain">
+				<column name="in_train"/>
+			</basic>
+			
+			<basic name="inTest">
+				<column name="in_test"/>
+			</basic>
+			
+			<basic name="beginDate">
+				<column name="begin_date"/>
+			</basic>
+			
+			<basic name="endDate">
+				<column name="end_date"/>
 			</basic>
 			
 			<one-to-many name="dealItems" target-entity="sk.zatko.vi.recommender.models.DealItem" mapped-by="deal"/>

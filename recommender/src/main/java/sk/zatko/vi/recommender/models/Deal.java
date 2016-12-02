@@ -1,5 +1,6 @@
 package sk.zatko.vi.recommender.models;
 
+import java.util.Date;
 import java.util.Set;
 
 import com.google.gson.annotations.Expose;
@@ -16,6 +17,11 @@ public class Deal {
 	private int partnerId;
 	
 	private Point location;
+	
+	@Expose private boolean inTrain;
+	@Expose private boolean inTest;
+	@Expose private Date beginDate;
+	@Expose private Date endDate;
 	
 	public int getId() {
 		return id;
@@ -71,6 +77,34 @@ public class Deal {
 	}
 	public void setLocation(Point location) {
 		this.location = location;
+	}
+	
+	public boolean isInTrain() {
+		return inTrain;
+	}
+	public void setInTrain(boolean inTrain) {
+		this.inTrain = inTrain;
+	}
+	
+	public boolean isInTest() {
+		return inTest;
+	}
+	public void setInTest(boolean inTest) {
+		this.inTest = inTest;
+	}
+	
+	public Date getBeginDate() {
+		return beginDate;
+	}
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+	
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 	
 }

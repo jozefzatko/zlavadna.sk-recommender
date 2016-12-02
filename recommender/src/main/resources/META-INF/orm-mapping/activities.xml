@@ -10,7 +10,8 @@
 		<index name="user_id_index" column-list="user_id"></index>
 		<index name="deal_item_id_index" column-list="deal_item_id"></index>
 		<index name="deal_id_index" column-list="deal_id"></index>
-		<index name="price_index" column-list="price"></index>
+		<index name="created_at_index" column-list="created_at"></index>
+		<index name="discount_index" column-list="discount"></index>
 	</table>
 	
 		<attributes>
@@ -20,9 +21,17 @@
 			<basic name="quantity">
 				<column name="quantity"/>
 			</basic>
+	
+			<basic name="marketPrice">
+				<column name="market_price"/>
+			</basic>
 			
-			<basic name="price">
-				<column name="price"/>
+			<basic name="teamPrice">
+				<column name="team_price"/>
+			</basic>
+			
+			<basic name="discount">
+				<column name="discount"/>
 			</basic>
 			
 			<basic name="createdAt">

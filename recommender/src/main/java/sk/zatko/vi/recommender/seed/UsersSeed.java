@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import com.opencsv.CSVReader;
+
 public class UsersSeed extends CSVParser {
 	
 	private static final String INSERT_QUERY =
@@ -15,14 +17,21 @@ public class UsersSeed extends CSVParser {
 			"SELECT :id\n" +
 			"WHERE NOT EXISTS (SELECT * FROM users WHERE id = :id)";
 	
-	public UsersSeed(EntityManager entityManager, String csvFile) throws FileNotFoundException, UnsupportedEncodingException {
-		super(entityManager, csvFile);
+	public UsersSeed(EntityManager entityManager, String trainCsvFile, String testCsvFile) throws FileNotFoundException, UnsupportedEncodingException {
+		
+		super(entityManager, trainCsvFile, testCsvFile);
 	}
 
 	@Override
 	public void readAndStoreData() throws NumberFormatException, IOException {
 		
-		EntityTransaction insertTransaction = this.entityManager.getTransaction();
+		readAndStoreUser(this.trainReader, this.entityManager);
+		readAndStoreUser(this.testReader, this.entityManager);
+	}
+	
+	private void readAndStoreUser(CSVReader reader, EntityManager entityManagers) throws NumberFormatException, IOException {
+		
+		EntityTransaction insertTransaction = entityManager.getTransaction();
 		String[] csvLine;
 
 		while ((csvLine = reader.readNext()) != null) {
@@ -38,5 +47,7 @@ public class UsersSeed extends CSVParser {
 				insertTransaction.commit();
 			}
 		}
+		
+		reader.close();
 	}
 }

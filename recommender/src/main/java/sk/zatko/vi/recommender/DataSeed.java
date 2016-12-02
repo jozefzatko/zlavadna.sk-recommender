@@ -16,66 +16,63 @@ import sk.zatko.vi.recommender.seed.UsersSeed;
 
 public class DataSeed {
 	
-	final static Logger logger = Logger.getLogger(DataSeed.class);
+	private final static Logger logger = Logger.getLogger(DataSeed.class);
+	
+	private final static String SET_BEGIN_DATE =
+			"UPDATE deals dls\n" + 
+			"SET begin_date = (\n" + 
+			"	SELECT i.coupon_begin_date FROM dealitems i\n" + 
+			"	JOIN deals d\n" + 
+			"	ON i.deal_id = d.id\n" + 
+			"	WHERE d.id = dls.id\n" +
+			"   AND i.coupon_begin_date <> '1970-01-01 01:00:00'\n" + 
+			"	ORDER BY i.coupon_begin_date\n" + 
+			"	LIMIT 1\n" + 
+			")";
+	
+	private final static String SET_END_DATE =
+			"UPDATE deals dls\n" + 
+			"SET end_date = (\n" + 
+			"	SELECT i.coupon_end_date FROM dealitems i\n" + 
+			"	JOIN deals d\n" + 
+			"	ON i.deal_id = d.id\n" + 
+			"	WHERE d.id = dls.id\n" +
+			"   AND i.coupon_end_date <> '1970-01-01 01:00:00'\n" + 
+			"	ORDER BY i.coupon_end_date DESC\n" + 
+			"	LIMIT 1\n" + 
+			")";
 	
 	public static void main(String[] args) {
 
 		CSVParser parser;
 		
-		EntityManagerFactory emfactory;
-		EntityManager entityManager;		
-		
-		emfactory = Persistence.createEntityManagerFactory("train_db");
-		entityManager = emfactory.createEntityManager();
-		
+		EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("db");
+		EntityManager entityManager = emfactory.createEntityManager();		
+
 		logger.info("Starting data seed from CSV files into database...");
 		
 		try {
 			
-			parser = new DealsSeed(entityManager, "data//train_deal_details.csv");
+			parser = new DealsSeed(entityManager, "data//train_deal_details.csv", "data//test_deal_details.csv");
 			parser.readAndStoreData();
-			logger.info("Data seed from train_deal_details.csv to train_db.deals completed");
+			logger.info("Data seed: deals");
 			
-			parser = new DealItemsSeed(entityManager, "data//train_dealitems.csv");
+			parser = new DealItemsSeed(entityManager, "data//train_dealitems.csv", "data//test_dealitems.csv");
 			parser.readAndStoreData();
-			logger.info("Data seed from train_dealitems.csv to train_db.dealitems completed");
+			logger.info("Data seed: deal items");
 			
-			parser = new UsersSeed(entityManager, "data//train_activity.csv");
+			parser = new UsersSeed(entityManager, "data//train_activity.csv", "data//test_activity.csv");
 			parser.readAndStoreData();
-			logger.info("Data seed from train_activity.csv to train_db.activities completed");
+			logger.info("Data seed: users");
 			
-			parser = new ActivitiesSeed(entityManager, "data//train_activity.csv");
+			parser = new ActivitiesSeed(entityManager, "data//train_activity.csv", "data//test_activity.csv");
 			parser.readAndStoreData();
-			logger.info("Data seed from train_activity.csv to train_db.users completed");
+			logger.info("Data seed: activities");
 			
-		} catch (NumberFormatException | IOException e) {
-			logger.error("Error while seeding train database", e);
-			System.exit(1);
-		} finally {
-			entityManager.close();
-		}
-		
-		
-		emfactory = Persistence.createEntityManagerFactory("test_db");
-		entityManager = emfactory.createEntityManager();
-		
-		try {
-			
-			parser = new DealsSeed(entityManager, "data//test_deal_details.csv");
-			parser.readAndStoreData();
-			logger.info("Data seed from test_deal_details.csv to test_db.deals completed");
-			
-			parser = new DealItemsSeed(entityManager, "data//test_dealitems.csv");
-			parser.readAndStoreData();
-			logger.info("Data seed from test_dealitems.csv to test_db.dealitems completed");
-			
-			parser = new UsersSeed(entityManager, "data//test_activity.csv");
-			parser.readAndStoreData();
-			logger.info("Data seed from test_activity.csv to test_db.activities completed");
-			
-			parser = new ActivitiesSeed(entityManager, "data//test_activity.csv");
-			parser.readAndStoreData();
-			logger.info("Data seed from test_activity.csv to test_db.users completed");
+			entityManager.getTransaction().begin();
+			entityManager.createNativeQuery(SET_BEGIN_DATE).executeUpdate();
+			entityManager.createNativeQuery(SET_END_DATE).executeUpdate();
+			entityManager.getTransaction().commit();
 			
 		} catch (NumberFormatException | IOException e) {
 			logger.error("Error while seeding train database", e);
