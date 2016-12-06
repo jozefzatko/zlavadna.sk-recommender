@@ -20,8 +20,8 @@ public class Deal {
 	
 	@Expose private boolean inTrain;
 	@Expose private boolean inTest;
-	@Expose private Date beginDate;
-	@Expose private Date endDate;
+	private Date beginDate;
+	private Date endDate;
 	
 	public int getId() {
 		return id;

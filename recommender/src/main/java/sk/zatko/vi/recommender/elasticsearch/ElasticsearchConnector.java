@@ -1,6 +1,8 @@
 package sk.zatko.vi.recommender.elasticsearch;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -23,6 +25,7 @@ public class ElasticsearchConnector {
 	
 	private static final String ELASTIC_NODE_URI = "http://localhost:9200/";
 	
+	protected static String lastResponse;
 	
 	public CloseableHttpResponse getRequest(String uri) {
 		
@@ -35,7 +38,8 @@ public class ElasticsearchConnector {
 	    
 		try {
 			response = httpClient.execute(httpGet);
-			
+			lastResponse = getResponseBody(response);
+
 		} catch (IOException e) {
 			logger.error("Cannot execute request " + httpGet.toString(), e);
 		} finally {
@@ -64,6 +68,7 @@ public class ElasticsearchConnector {
 	    
 		try {
 			response = httpClient.execute(httpPost);
+			lastResponse = getResponseBody(response);
 			
 		} catch (IOException e) {
 			logger.error("Cannot execute request " + httpPost.toString(), e);
@@ -93,6 +98,7 @@ public class ElasticsearchConnector {
 	    
 		try {
 			response = httpClient.execute(httpPut);
+			lastResponse = getResponseBody(response);
 			
 		} catch (IOException e) {
 			logger.error("Cannot execute request " + httpPut.toString(), e);
@@ -115,6 +121,7 @@ public class ElasticsearchConnector {
 	    
 		try {
 			response = httpClient.execute(httpDelete);
+			lastResponse = getResponseBody(response);
 			
 		} catch (IOException e) {
 			logger.error("Cannot execute request " + httpDelete.toString(), e);
@@ -126,6 +133,29 @@ public class ElasticsearchConnector {
 	}
 	
 
+	protected String getResponseBody(CloseableHttpResponse response) {
+		
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+			
+		} catch (UnsupportedOperationException | IOException e) {
+			e.printStackTrace();
+		}
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		try {
+			while ((line = reader.readLine()) != null) {
+				result.append(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result.toString();
+	}
+	
 	private void setHeader(HttpRequestBase request) {
 		
 		request.setHeader("Accept", "application/json");
@@ -133,7 +163,7 @@ public class ElasticsearchConnector {
 	}
 	
 	
-	private void closeQuietly(CloseableHttpClient httpClient) {
+	protected void closeQuietly(CloseableHttpClient httpClient) {
 		
 		try {
 			httpClient.close();

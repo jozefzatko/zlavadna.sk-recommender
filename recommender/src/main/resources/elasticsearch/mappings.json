@@ -68,10 +68,12 @@
 					"type": "boolean"
 				},
 				"begin_date": {
-					"type": "date"
+					"type": "date",
+					"format": "yyyy-MM-dd"
 				},
 				"end_date": {
-					"type": "date"
+					"type": "date",
+					"format": "yyyy-MM-dd"
 				}
 			}
 		}

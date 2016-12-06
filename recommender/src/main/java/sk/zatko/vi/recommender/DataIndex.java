@@ -1,6 +1,8 @@
 package sk.zatko.vi.recommender;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,7 +13,9 @@ import org.apache.http.client.ClientProtocolException;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 
 import sk.zatko.vi.recommender.elasticsearch.ElasticsearchIndexer;
 import sk.zatko.vi.recommender.models.Deal;
@@ -25,6 +29,7 @@ public class DataIndex {
 	private static final String INDEX_NAME = "deals/";	
 	private static final String DOCUMENT_NAME = "deal";
 	
+	private static final String ELASTIC_DATE_FORMAT = "yyyy-MM-dd";
 
 	public static void main(String[] args) {
 		
@@ -74,7 +79,15 @@ public class DataIndex {
 	
 	private void indexDealObject(ElasticsearchIndexer indexer, Deal deal, String indexName, String documentName) {
 		
-		String jsonObject = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(deal);
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		JsonElement jsonElement = gson.toJsonTree(deal);
+		
+		jsonElement.getAsJsonObject().addProperty("begin_date", format(deal.getBeginDate()));
+		jsonElement.getAsJsonObject().addProperty("end_date", format(deal.getEndDate()));
+		
+		gson.toJson(jsonElement);
+		
+		String jsonObject = gson.toJson(jsonElement);
 		
 		try {
 			indexer.indexRecord(indexName, documentName, jsonObject, deal.getId());
@@ -86,6 +99,16 @@ public class DataIndex {
 			logger.error("Failed to create index with id: " + deal.getId(), e);
 			logger.info(jsonObject);
 		}
+	}
+
+	private String format(Date date) {
+		
+		if (date == null) {
+			
+			return null;
+		}
+		
+		return new SimpleDateFormat(ELASTIC_DATE_FORMAT).format(date);
 	}
 	
 }
