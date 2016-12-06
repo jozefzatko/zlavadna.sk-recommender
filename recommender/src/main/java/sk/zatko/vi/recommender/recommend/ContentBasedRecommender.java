@@ -1,10 +1,9 @@
 package sk.zatko.vi.recommender.recommend;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
+import java.util.Date;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -19,7 +18,10 @@ import sk.zatko.vi.recommender.elasticsearch.morelikethis.MoreLikeThisQuery;
 
 public abstract class ContentBasedRecommender extends Recommender {
 
-	protected static final EntityManager ENTITY_MANAGER = Persistence.createEntityManagerFactory("db").createEntityManager();
+	protected static final String INDEX_NAME = "deals";
+	protected static final String DOCUMENT_TYPE = "deal";
+	
+	private static final String ELASTIC_DATE_FORMAT = "yyyy-MM-dd";
 	
 	protected static final String USER_DEALS =
 			"SELECT d.id, d.title, d.description FROM activities a\r\n" + 
@@ -33,13 +35,13 @@ public abstract class ContentBasedRecommender extends Recommender {
 	
 	protected abstract ArrayList<LikeModel> createLikes(int currentUserId, int currentDealId);
 	
-	public ArrayList<Integer> recommend(int currentUserId, int currentDealId, int countOfResults) {
+	public ArrayList<Integer> recommend(int currentUserId, int currentDealId, Date currentDate, int countOfResults) {
 		
 		ArrayList<Integer> results;
 		
 		long startTime = System.currentTimeMillis();
 		
-		String preparedQuery = prepareElasticsearchQuery(currentUserId, currentDealId);
+		String preparedQuery = prepareElasticsearchQuery(currentUserId, currentDealId, currentDate);
 		long preparedTime = System.currentTimeMillis();
 		
 		String response = "";
@@ -60,7 +62,7 @@ public abstract class ContentBasedRecommender extends Recommender {
 		return results;
 	}
 	
-	protected String prepareElasticsearchQuery(int currentUserId, int currentDealId) {
+	protected String prepareElasticsearchQuery(int currentUserId, int currentDealId, Date currentDate) {
 		
 		ArrayList<MoreLikeThisModel> queries = new ArrayList<MoreLikeThisModel>();
 		
@@ -71,7 +73,7 @@ public abstract class ContentBasedRecommender extends Recommender {
 		
 		MoreLikeThisQuery query = new MoreLikeThisQuery(queries);
 		
-		return query.toJson("2014-08-30");
+		return query.toJson(format(currentDate));
 	}
 	
 	protected ArrayList<Integer> parseResults(String response, int countOfResults) {
@@ -88,7 +90,7 @@ public abstract class ContentBasedRecommender extends Recommender {
 		
 		for (int i=0; i<countOfResults; i++) {
 			
-			JsonObject dealJsonObject = hitsArray.get(i).getAsJsonObject();	
+			JsonObject dealJsonObject = hitsArray.get(i).getAsJsonObject();
 			results.add(dealJsonObject.get("_id").getAsInt());	
 		}
 		
@@ -102,5 +104,15 @@ public abstract class ContentBasedRecommender extends Recommender {
 		MoreLikeThisModelDetails model =  new MoreLikeThisModelDetails(fields, likes, minTermFreq, boost);
 		
 		return new MoreLikeThisModel(model);
+	}
+	
+	protected String format(Date date) {
+		
+		if (date == null) {
+			
+			return null;
+		}
+		
+		return new SimpleDateFormat(ELASTIC_DATE_FORMAT).format(date);
 	}
 }

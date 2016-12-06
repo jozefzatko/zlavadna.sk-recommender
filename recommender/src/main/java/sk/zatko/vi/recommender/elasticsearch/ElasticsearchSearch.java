@@ -10,8 +10,6 @@ public class ElasticsearchSearch extends ElasticsearchConnector {
 		
 		CloseableHttpResponse response = postRequest(indexName + "/_search?size=" + countOfResults, query);
 		
-		System.out.println(query);
-		
 		int statusCode = response.getStatusLine().getStatusCode();
 	    
 		if (statusCode != 200) {

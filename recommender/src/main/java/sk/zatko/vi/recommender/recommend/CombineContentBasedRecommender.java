@@ -1,6 +1,7 @@
 package sk.zatko.vi.recommender.recommend;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class CombineContentBasedRecommender extends ContentBasedRecommender {
 
 	public static void main(String args[]) {
 		
-		new CombineContentBasedRecommender().recommend(885, 35749, 10);
+		new CombineContentBasedRecommender().recommend(885, 35749, new Date(1406852020L * 1000L), 10);
 		
 		System.exit(0);
 	}

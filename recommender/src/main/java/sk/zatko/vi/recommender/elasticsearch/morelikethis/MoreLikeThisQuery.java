@@ -8,7 +8,7 @@ public class MoreLikeThisQuery {
 
 	private static final String BEFORE = "{\"query\":{\"filtered\": {\"query\":{\"dis_max\":{\"queries\":";
 	private static final String BETWEEN = " }},\"filter\": {\"range\": {\"end_date\": {\"lt\": \"";
-	private static final String AFTER = "\",\"format\":\"yyyy-MM-dd\"}}}}}}";
+	private static final String AFTER = "\",\"format\":\"yyyy-MM-dd\"}}},\"filter\":{\"match\":{\"inTest\": true}}}}}";
 	
 	private ArrayList<MoreLikeThisModel> queries;
 
