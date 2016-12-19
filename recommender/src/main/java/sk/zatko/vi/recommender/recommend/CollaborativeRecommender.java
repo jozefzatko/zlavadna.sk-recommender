@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
+import sk.zatko.vi.recommender.test.PerformanceCapturer;
+
 public class CollaborativeRecommender extends Recommender {
 	
 	protected static final String SELECT_QUERY =
@@ -51,11 +53,20 @@ public class CollaborativeRecommender extends Recommender {
 		
 		ArrayList<Integer> results;
 		
+		long startTime = System.currentTimeMillis();
+		
 		Query preparedQuery = prepareSqlQuery(currentUserId, currentDealId, currentDate, countOfResults);
-
+		long preparedTime = System.currentTimeMillis();
+		
 		List<?> resultList = executeSqlQuery(preparedQuery);
+		long executeTime = System.currentTimeMillis();
 		
 		results = parseResults(resultList);
+		long parsedTime = System.currentTimeMillis();
+		
+		PerformanceCapturer.addToPrepareQueryTime(preparedTime - startTime);
+		PerformanceCapturer.addToQueryTime(executeTime - preparedTime);
+		PerformanceCapturer.addToParseResultsTime(parsedTime - executeTime);
 		
 		return results;
 	}

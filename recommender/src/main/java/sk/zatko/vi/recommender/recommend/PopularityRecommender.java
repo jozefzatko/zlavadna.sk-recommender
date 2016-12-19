@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
+import sk.zatko.vi.recommender.test.PerformanceCapturer;
+
 public class PopularityRecommender extends Recommender {
 
 	private static final String SELECT_QUERY =
@@ -40,13 +42,22 @@ public class PopularityRecommender extends Recommender {
 	
 	public ArrayList<Integer> recommend(int currentUserId, int currentDealId, Date currentDate, int countOfResults) {
 		
-		ArrayList<Integer> results;
+	ArrayList<Integer> results;
+		
+		long startTime = System.currentTimeMillis();
 		
 		Query preparedQuery = prepareSqlQuery(currentUserId, currentDealId, currentDate, countOfResults);
+		long preparedTime = System.currentTimeMillis();
 		
 		List<?> resultList = executeSqlQuery(preparedQuery);
+		long executeTime = System.currentTimeMillis();
 		
 		results = parseResults(resultList);
+		long parsedTime = System.currentTimeMillis();
+		
+		PerformanceCapturer.addToPrepareQueryTime(preparedTime - startTime);
+		PerformanceCapturer.addToQueryTime(executeTime - preparedTime);
+		PerformanceCapturer.addToParseResultsTime(parsedTime - executeTime);
 		
 		return results;
 	}

@@ -16,6 +16,7 @@ import sk.zatko.vi.recommender.elasticsearch.morelikethis.MoreLikeThisModel;
 import sk.zatko.vi.recommender.elasticsearch.morelikethis.MoreLikeThisModelDetails;
 import sk.zatko.vi.recommender.elasticsearch.morelikethis.MoreLikeThisQuery;
 import sk.zatko.vi.recommender.exceptions.NoUserHistoryException;
+import sk.zatko.vi.recommender.test.PerformanceCapturer;
 
 public abstract class ContentBasedRecommender extends Recommender {
 
@@ -37,6 +38,9 @@ public abstract class ContentBasedRecommender extends Recommender {
 		
 		ArrayList<Integer> results;
 		
+		long startTime = System.currentTimeMillis();
+		
+		
 		String preparedQuery = "";
 		try {
 			preparedQuery = prepareElasticsearchQuery(currentUserId, currentDealId, currentDate);
@@ -45,6 +49,7 @@ public abstract class ContentBasedRecommender extends Recommender {
 			
 			return new ArrayList<Integer>();
 		}
+		long preparedTime = System.currentTimeMillis();
 		
 		
 		String response = "";
@@ -54,7 +59,15 @@ public abstract class ContentBasedRecommender extends Recommender {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		long responseTime = System.currentTimeMillis();
+		
+		
 		results = parseResults(response, countOfResults);
+		long parsedTime = System.currentTimeMillis();
+		
+		PerformanceCapturer.addToPrepareQueryTime(preparedTime - startTime);
+		PerformanceCapturer.addToQueryTime(responseTime - preparedTime);
+		PerformanceCapturer.addToParseResultsTime(parsedTime - responseTime);
 		
 		return results;
 	}
