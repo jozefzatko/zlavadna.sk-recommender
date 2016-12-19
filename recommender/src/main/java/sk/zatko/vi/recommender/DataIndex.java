@@ -22,7 +22,7 @@ import sk.zatko.vi.recommender.models.Deal;
 
 public class DataIndex {
 
-	final static Logger logger = Logger.getLogger(DataIndex.class);
+	private static final Logger logger = Logger.getLogger(DataIndex.class);
 	
 	private static final String MAPPING_FILE = "src//main//resources//elasticsearch//mappings.json";
 	

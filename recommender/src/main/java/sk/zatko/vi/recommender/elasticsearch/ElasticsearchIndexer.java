@@ -3,9 +3,11 @@ package sk.zatko.vi.recommender.elasticsearch;
 import java.io.IOException;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.log4j.Logger;
 
 public class ElasticsearchIndexer extends ElasticsearchConnector {
 	
+	private static final Logger logger = Logger.getLogger(ElasticsearchIndexer.class);
 	
 	public void createIndex(String indexName, String mappingFile) throws IOException {
 		

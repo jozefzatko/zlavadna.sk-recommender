@@ -25,7 +25,7 @@ public class CombineContentBasedRecommender extends ContentBasedRecommender {
 		likes.add(new LikeModel(INDEX_NAME, DOCUMENT_TYPE, currentDealId + ""));
 		
 		
-		Query selectQuery = ENTITY_MANAGER.createNativeQuery(USER_DEALS).setParameter("user_id", currentUserId);
+		Query selectQuery = ENTITY_MANAGER.createNativeQuery(USER_DEALS_IN_TRAIN).setParameter("user_id", currentUserId);
 		List<?> results = selectQuery.getResultList();
 		Iterator<?> iterator = results.iterator();  
 		   
@@ -40,5 +40,10 @@ public class CombineContentBasedRecommender extends ContentBasedRecommender {
 		}
 		
 		return likes;
+	}
+	
+	public String toString() {
+		
+		return "CombineContentBasedRecommender";
 	}
 }

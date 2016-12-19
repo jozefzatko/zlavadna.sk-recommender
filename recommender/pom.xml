@@ -104,7 +104,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>sk.zatko.vi.recommender.Main</mainClass>
+							<mainClass>sk.zatko.vi.recommender.Recommender</mainClass>
 							<classpathPrefix>dependency-jars/</classpathPrefix>
 						</manifest>
 					</archive>
@@ -129,7 +129,7 @@
 							</descriptorRefs>
 							<archive>
 								<manifest>
-									<mainClass>sk.zatko.vi.recommender.Main</mainClass>
+									<mainClass>sk.zatko.vi.recommender.Recommender</mainClass>
 								</manifest>
 							</archive>
 						</configuration>

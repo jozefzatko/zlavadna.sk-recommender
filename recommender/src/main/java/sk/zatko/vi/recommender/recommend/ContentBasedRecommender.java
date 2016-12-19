@@ -15,6 +15,7 @@ import sk.zatko.vi.recommender.elasticsearch.morelikethis.LikeModel;
 import sk.zatko.vi.recommender.elasticsearch.morelikethis.MoreLikeThisModel;
 import sk.zatko.vi.recommender.elasticsearch.morelikethis.MoreLikeThisModelDetails;
 import sk.zatko.vi.recommender.elasticsearch.morelikethis.MoreLikeThisQuery;
+import sk.zatko.vi.recommender.exceptions.NoUserHistoryException;
 
 public abstract class ContentBasedRecommender extends Recommender {
 
@@ -23,53 +24,49 @@ public abstract class ContentBasedRecommender extends Recommender {
 	
 	private static final String ELASTIC_DATE_FORMAT = "yyyy-MM-dd";
 	
-	protected static final String USER_DEALS =
-			"SELECT d.id, d.title, d.description FROM activities a\r\n" + 
-			"JOIN users u ON a.user_id = u.id\r\n" + 
-			"JOIN deals d on a.deal_id = d.id\r\n" + 
-			"WHERE d.in_test = false\r\n" + 
-			"AND d.in_train = true\r\n" + 
-			"AND u.id = :user_id";
+	protected static final String USER_DEALS_IN_TRAIN =
+			"SELECT DISTINCT deal_id, created_at FROM activities\r\n" + 
+			"WHERE created_at <= '2014-08-01 00:00:00'\r\n" + 
+			"AND user_id = :user_id";
 	
 	protected static int lastTookTime;
 	
-	protected abstract ArrayList<LikeModel> createLikes(int currentUserId, int currentDealId);
+	protected abstract ArrayList<LikeModel> createLikes(int currentUserId, int currentDealId) throws NoUserHistoryException;
 	
 	public ArrayList<Integer> recommend(int currentUserId, int currentDealId, Date currentDate, int countOfResults) {
 		
 		ArrayList<Integer> results;
 		
-		long startTime = System.currentTimeMillis();
+		String preparedQuery = "";
+		try {
+			preparedQuery = prepareElasticsearchQuery(currentUserId, currentDealId, currentDate);
+			
+		} catch (NoUserHistoryException e) {
+			
+			return new ArrayList<Integer>();
+		}
 		
-		String preparedQuery = prepareElasticsearchQuery(currentUserId, currentDealId, currentDate);
-		long preparedTime = System.currentTimeMillis();
 		
 		String response = "";
 		try {
 			response = new ElasticsearchSearch().search(INDEX_NAME, preparedQuery, countOfResults);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		long responseTime = System.currentTimeMillis();
-		
 		results = parseResults(response, countOfResults);
-		long parsedTime = System.currentTimeMillis();
-		
-		System.out.println("Create elasticsearch query: " + (preparedTime - startTime) + " ms");
-		System.out.println("REST request: " + (responseTime - preparedTime) + " ms (took: " + lastTookTime + " ms)");
-		System.out.println("Parse results time: " + (parsedTime - responseTime) + " ms");
 		
 		return results;
 	}
 	
-	protected String prepareElasticsearchQuery(int currentUserId, int currentDealId, Date currentDate) {
+	protected String prepareElasticsearchQuery(int currentUserId, int currentDealId, Date currentDate) throws NoUserHistoryException {
 		
 		ArrayList<MoreLikeThisModel> queries = new ArrayList<MoreLikeThisModel>();
 		
 		ArrayList<LikeModel> likes = createLikes(currentUserId, currentDealId);
 		
 		queries.add(createMoreLikeThisModel("title", likes, 1 , 3));
-		queries.add(createMoreLikeThisModel("description", likes, 1 , 1));	
+		queries.add(createMoreLikeThisModel("description", likes, 2 , 1));	
 		
 		MoreLikeThisQuery query = new MoreLikeThisQuery(queries);
 		
@@ -88,7 +85,7 @@ public abstract class ContentBasedRecommender extends Recommender {
 		JsonObject hitsObjects = rootObject.get("hits").getAsJsonObject();
 		JsonArray hitsArray = hitsObjects.getAsJsonArray("hits");
 		
-		for (int i=0; i<countOfResults; i++) {
+		for (int i=0; i<hitsArray.size(); i++) {
 			
 			JsonObject dealJsonObject = hitsArray.get(i).getAsJsonObject();
 			results.add(dealJsonObject.get("_id").getAsInt());	

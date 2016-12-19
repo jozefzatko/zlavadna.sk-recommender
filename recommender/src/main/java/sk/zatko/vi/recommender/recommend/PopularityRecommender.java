@@ -42,20 +42,11 @@ public class PopularityRecommender extends Recommender {
 		
 		ArrayList<Integer> results;
 		
-		long startTime = System.currentTimeMillis();
-		
 		Query preparedQuery = prepareSqlQuery(currentUserId, currentDealId, currentDate, countOfResults);
-		long preparedTime = System.currentTimeMillis();
 		
 		List<?> resultList = executeSqlQuery(preparedQuery);
-		long executeTime = System.currentTimeMillis();
 		
 		results = parseResults(resultList);
-		long parsedTime = System.currentTimeMillis();
-		
-		System.out.println("Create SQL query: " + (preparedTime - startTime) + " ms");
-		System.out.println("SQL query: " + (executeTime - preparedTime) + " ms");
-		System.out.println("Parse results: " + (parsedTime - executeTime) + " ms");
 		
 		return results;
 	}
@@ -68,5 +59,10 @@ public class PopularityRecommender extends Recommender {
 				.setParameter("limit", countOfResults);
 		
 		return selectQuery;
+	}
+	
+	public String toString() {
+		
+		return "PopularityRecommender";
 	}
 }

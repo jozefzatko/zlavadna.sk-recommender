@@ -32,8 +32,8 @@ public abstract class Recommender {
 			int id = (Integer) result[0];
 			
 			results.add(id);
-		}  
-
+		}
+		
 		return results;
 	}
 }

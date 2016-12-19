@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import sk.zatko.vi.recommender.elasticsearch.morelikethis.LikeModel;
+import sk.zatko.vi.recommender.exceptions.NoUserHistoryException;
 
 public class UserHistoryContentBasedRecommender extends ContentBasedRecommender {
 	
@@ -18,12 +19,18 @@ public class UserHistoryContentBasedRecommender extends ContentBasedRecommender 
 		System.exit(0);
 	}
 
-	protected ArrayList<LikeModel> createLikes(int currentUserId, int currentDealId) {
+	protected ArrayList<LikeModel> createLikes(int currentUserId, int currentDealId) throws NoUserHistoryException {
 		
 		ArrayList<LikeModel> likes = new ArrayList<LikeModel>();
 		
-		Query selectQuery = ENTITY_MANAGER.createNativeQuery(USER_DEALS).setParameter("user_id", currentUserId);
+		Query selectQuery = ENTITY_MANAGER.createNativeQuery(USER_DEALS_IN_TRAIN).setParameter("user_id", currentUserId);
 		List<?> results = selectQuery.getResultList();
+		
+		if (results.isEmpty()) {
+			
+			throw new NoUserHistoryException("user_id: " + currentUserId);
+		}
+		
 		Iterator<?> iterator = results.iterator();  
 		   
 		while (iterator.hasNext()) {  
@@ -37,6 +44,11 @@ public class UserHistoryContentBasedRecommender extends ContentBasedRecommender 
 		}  
 
 		return likes;
+	}
+	
+	public String toString() {
+		
+		return "UserHistoryContentBasedRecommender";
 	}
 
 }

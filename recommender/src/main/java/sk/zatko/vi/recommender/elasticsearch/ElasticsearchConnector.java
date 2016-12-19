@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 
 public class ElasticsearchConnector {
 
-	final static Logger logger = Logger.getLogger(ElasticsearchConnector.class);
+	private static final Logger logger = Logger.getLogger(ElasticsearchConnector.class);
 	
 	private static final String ELASTIC_NODE_URI = "http://localhost:9200/";
 	

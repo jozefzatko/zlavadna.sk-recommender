@@ -18,12 +18,13 @@ public class CollaborativeRecommender extends Recommender {
 			"),\r\n" + 
 			"all_activities AS (\r\n" + 
 			"	SELECT DISTINCT deal_id, user_id FROM activities\r\n" + 
-			"	WHERE created_at <= '2014-08-01 00:00:00'\r\n" + 
+			"	WHERE created_at <= '2014-08-01 00:00:00'\r\n" +
+			"	AND user_id <> :user_id\r\n" + 
 			"),\r\n" + 
 			"similiar_users AS(\r\n" + 
 			"	SELECT aa.user_id, count(aa.deal_id) FROM user_activities ua\r\n" + 
 			"	JOIN all_activities aa\r\n" + 
-			"	ON ua.deal_id = aa.deal_id AND ua.user_id <> aa.user_id\r\n" + 
+			"	ON ua.deal_id = aa.deal_id\r\n" + 
 			"	GROUP BY aa.user_id\r\n" + 
 			"	ORDER BY count DESC\r\n" + 
 			"	LIMIT 10\r\n" + 
@@ -34,7 +35,6 @@ public class CollaborativeRecommender extends Recommender {
 			"JOIN similiar_users su ON su.user_id = a.user_id\r\n" + 
 			"WHERE NOT EXISTS (SELECT * FROM activities WHERE user_id = :user_id AND d.id = deal_id)\r\n" + 
 			"AND a.created_at >= '2014-08-01 00:00:01'\r\n" + 
-			"AND d.in_test = true\r\n" + 
 			"AND d.end_date >= :date\r\n" + 
 			"GROUP BY a.deal_id\r\n" + 
 			"ORDER BY count DESC\r\n" + 
@@ -51,20 +51,11 @@ public class CollaborativeRecommender extends Recommender {
 		
 		ArrayList<Integer> results;
 		
-		long startTime = System.currentTimeMillis();
-		
 		Query preparedQuery = prepareSqlQuery(currentUserId, currentDealId, currentDate, countOfResults);
-		long preparedTime = System.currentTimeMillis();
-		
+
 		List<?> resultList = executeSqlQuery(preparedQuery);
-		long executeTime = System.currentTimeMillis();
 		
 		results = parseResults(resultList);
-		long parsedTime = System.currentTimeMillis();
-		
-		System.out.println("Create SQL query: " + (preparedTime - startTime) + " ms");
-		System.out.println("SQL query: " + (executeTime - preparedTime) + " ms");
-		System.out.println("Parse results: " + (parsedTime - executeTime) + " ms");
 		
 		return results;
 	}
@@ -77,6 +68,11 @@ public class CollaborativeRecommender extends Recommender {
 				.setParameter("limit", countOfResults);
 		
 		return selectQuery;
+	}
+	
+	public String toString() {
+		
+		return "CollaborativeRecommender";
 	}
 
 }

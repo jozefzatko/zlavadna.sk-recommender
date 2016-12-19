@@ -16,9 +16,9 @@ import sk.zatko.vi.recommender.seed.UsersSeed;
 
 public class DataSeed {
 	
-	private final static Logger logger = Logger.getLogger(DataSeed.class);
+	private static final Logger logger = Logger.getLogger(DataSeed.class);
 	
-	private final static String SET_BEGIN_DATE =
+	private static final String SET_BEGIN_DATE =
 			"UPDATE deals dls\n" + 
 			"SET begin_date = (\n" + 
 			"	SELECT i.coupon_begin_date FROM dealitems i\n" + 
@@ -30,7 +30,7 @@ public class DataSeed {
 			"	LIMIT 1\n" + 
 			")";
 	
-	private final static String SET_END_DATE =
+	private static final String SET_END_DATE =
 			"UPDATE deals dls\n" + 
 			"SET end_date = (\n" + 
 			"	SELECT i.coupon_end_date FROM dealitems i\n" + 

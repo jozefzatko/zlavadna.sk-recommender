@@ -23,4 +23,9 @@ public class SimpleContentBasedRecommender extends ContentBasedRecommender {
 
 		return likes;
 	}
+	
+	public String toString() {
+		
+		return "SimpleContentBasedRecommender";
+	}
 }
