@@ -8,6 +8,7 @@ import sk.zatko.vi.recommender.recommend.PopularityRecommender;
 import sk.zatko.vi.recommender.recommend.Recommender;
 import sk.zatko.vi.recommender.recommend.SimpleContentBasedRecommender;
 import sk.zatko.vi.recommender.recommend.UserHistoryContentBasedRecommender;
+import sk.zatko.vi.recommender.recommend.ZatkoUltimateRecommender;
 import sk.zatko.vi.recommender.test.RandomUserGenerator;
 import sk.zatko.vi.recommender.test.RecommenderTester;
 
@@ -18,6 +19,7 @@ public class TestRunner {
 	private static Recommender combineContentBasedRecommender = new CombineContentBasedRecommender();
 	private static Recommender collaborativeRecommender = new CollaborativeRecommender();
 	private static Recommender popularityRecommender = new PopularityRecommender();
+	private static Recommender zatkoUltimateRecommender = new ZatkoUltimateRecommender();
 	
 	public static void main(String args[]) {
 		
@@ -45,6 +47,7 @@ public class TestRunner {
 		new RecommenderTester(combineContentBasedRecommender, users).test(countOfResults);
 		new RecommenderTester(collaborativeRecommender, users).test(countOfResults);
 		new RecommenderTester(popularityRecommender, users).test(countOfResults);
+		new RecommenderTester(zatkoUltimateRecommender, users).test(countOfResults);
 	}
 	
 	private ArrayList<Integer> prepareUsers() {

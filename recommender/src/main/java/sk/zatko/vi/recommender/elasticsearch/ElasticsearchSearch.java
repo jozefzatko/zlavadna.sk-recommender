@@ -11,7 +11,14 @@ public class ElasticsearchSearch extends ElasticsearchConnector {
 	
 	public String search(String indexName, String query, int countOfResults) throws IOException {
 		
-		CloseableHttpResponse response = postRequest(indexName + "/_search?size=" + countOfResults, query);
+		String params = "";
+		
+		if (countOfResults >= 0) {
+			
+			params = "?size=" + countOfResults;
+		}
+		
+		CloseableHttpResponse response = postRequest(indexName + "/_search" + params, query);
 		
 		int statusCode = response.getStatusLine().getStatusCode();
 	    

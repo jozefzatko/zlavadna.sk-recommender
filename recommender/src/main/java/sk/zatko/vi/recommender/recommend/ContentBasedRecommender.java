@@ -88,7 +88,7 @@ public abstract class ContentBasedRecommender extends Recommender {
 	
 	protected ArrayList<Integer> parseResults(String response, int countOfResults) {
 		
-		ArrayList<Integer> results = new ArrayList<Integer>(countOfResults);
+		ArrayList<Integer> results = new ArrayList<Integer>();
 		
 		JsonElement rootElement = new JsonParser().parse(response);
 		JsonObject rootObject = rootElement.getAsJsonObject();
