@@ -24,6 +24,18 @@ public class TestModel {
 		
 		return tp / (tp + fp);
 	}
+	
+	public double getF1() {
+		
+		double p = getPrecision();
+		double r = getRecall();
+		
+		if (Double.isNaN(1.0/p + 1.0/r)) {
+			return 0.0;
+		}
+		
+		return 2.0 / (1.0/p + 1.0/r);
+	}
 
 	
 	public double getTp() {

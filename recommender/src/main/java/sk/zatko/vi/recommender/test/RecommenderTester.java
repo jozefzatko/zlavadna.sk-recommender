@@ -40,6 +40,7 @@ public class RecommenderTester {
 		
 		double totalPrecision = 0.0;
 		double totalRecall = 0.0;
+		double totalF1 = 0.0;
 		
 		int zeroResultsCounter = 0;
 		int someResultsCounter = 0;
@@ -71,6 +72,7 @@ public class RecommenderTester {
 			
 			totalPrecision += tm.getPrecision();
 			totalRecall += tm.getRecall();
+			totalF1 += tm.getF1();
 		}
 		
 		logger.info("- - - - - - - - - - - - - - - - - - - - - - - - - - -");
@@ -79,6 +81,8 @@ public class RecommenderTester {
 		
 		logger.info("Precision: " + totalPrecision / users.size());
 		logger.info("Recall: " + totalRecall / users.size());
+		logger.info("F1: " + totalF1 / users.size());
+		
 		logger.info("Results count distribution: " + zeroResultsCounter + ", " + someResultsCounter + ", " + fullResultsCounter);
 		
 		logger.info("Prepare query: " + PerformanceCapturer.getPrepareQueryTime() / (double)users.size() + " ms");
