@@ -38,6 +38,14 @@
 				<column name="created_at"/>
 			</basic>
 			
+			<basic name="inTrain">
+				<column name="in_train"/>
+			</basic>
+			
+			<basic name="inTest">
+				<column name="in_test"/>
+			</basic>
+			
 			<many-to-one name="user">
 				 <join-column name="user_id"/>
 			</many-to-one>

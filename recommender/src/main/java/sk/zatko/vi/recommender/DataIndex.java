@@ -26,7 +26,7 @@ public class DataIndex {
 	
 	private static final String MAPPING_FILE = "src//main//resources//elasticsearch//mappings.json";
 	
-	private static final String INDEX_NAME = "deals/";	
+	private static final String INDEX_NAME = "vi_challenge_deals/";	
 	private static final String DOCUMENT_NAME = "deal";
 	
 	private static final String ELASTIC_DATE_FORMAT = "yyyy-MM-dd";

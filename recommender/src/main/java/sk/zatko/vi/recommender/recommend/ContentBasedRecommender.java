@@ -20,14 +20,14 @@ import sk.zatko.vi.recommender.test.PerformanceCapturer;
 
 public abstract class ContentBasedRecommender extends Recommender {
 
-	protected static final String INDEX_NAME = "deals";
+	protected static final String INDEX_NAME = "vi_challenge_deals";
 	protected static final String DOCUMENT_TYPE = "deal";
 	
 	private static final String ELASTIC_DATE_FORMAT = "yyyy-MM-dd";
 	
 	protected static final String USER_DEALS_IN_TRAIN =
 			"SELECT DISTINCT deal_id, created_at FROM activities\r\n" + 
-			"WHERE created_at <= '2014-08-01 00:00:00'\r\n" + 
+			"WHERE in_train = true\r\n" + 
 			"AND user_id = :user_id";
 	
 	protected static int lastTookTime;

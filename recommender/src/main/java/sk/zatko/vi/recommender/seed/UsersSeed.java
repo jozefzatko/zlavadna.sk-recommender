@@ -17,16 +17,16 @@ public class UsersSeed extends CSVParser {
 			"SELECT :id\n" +
 			"WHERE NOT EXISTS (SELECT * FROM users WHERE id = :id)";
 	
-	public UsersSeed(EntityManager entityManager, String trainCsvFile, String testCsvFile) throws FileNotFoundException, UnsupportedEncodingException {
+	public UsersSeed(EntityManager entityManager, String train1CsvFile, String train2CsvFile) throws FileNotFoundException, UnsupportedEncodingException {
 		
-		super(entityManager, trainCsvFile, testCsvFile);
+		super(entityManager, train1CsvFile, train2CsvFile);
 	}
 
 	@Override
 	public void readAndStoreData() throws NumberFormatException, IOException {
 		
-		readAndStoreUser(this.trainReader, this.entityManager);
-		readAndStoreUser(this.testReader, this.entityManager);
+		readAndStoreUser(this.train1Reader, this.entityManager);
+		readAndStoreUser(this.train2Reader, this.entityManager);
 	}
 	
 	private void readAndStoreUser(CSVReader reader, EntityManager entityManagers) throws NumberFormatException, IOException {

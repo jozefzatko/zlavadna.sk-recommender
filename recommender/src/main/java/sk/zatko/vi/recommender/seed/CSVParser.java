@@ -17,14 +17,22 @@ public abstract class CSVParser {
 	
 	protected EntityManager entityManager;
 	
-	protected CSVReader trainReader;
+	protected CSVReader train1Reader;
+	protected CSVReader train2Reader;
 	protected CSVReader testReader;
 	
-	public CSVParser(EntityManager entityManager, String trainCsvFile, String testCsvFile) throws FileNotFoundException, UnsupportedEncodingException {
+	public CSVParser(EntityManager entityManager, String train1CsvFile, String train2CsvFile) throws FileNotFoundException, UnsupportedEncodingException {
 		
 		this.entityManager = entityManager;
 		
-		this.trainReader = initReader(trainCsvFile);
+		this.train1Reader = initReader(train1CsvFile);
+		this.train2Reader = initReader(train2CsvFile);
+	}
+	
+	public CSVParser(EntityManager entityManager, String train1CsvFile, String train2CsvFile, String testCsvFile) throws FileNotFoundException, UnsupportedEncodingException {
+		
+		this(entityManager, train1CsvFile, train2CsvFile);
+		
 		this.testReader = initReader(testCsvFile);
 	}
 	

@@ -53,11 +53,11 @@ public class DataSeed {
 		
 		try {
 			
-			parser = new DealsSeed(entityManager, "data//train_deal_details.csv", "data//test_deal_details.csv");
+			parser = new DealsSeed(entityManager, "data//train_deal_details.csv", "data//test_deal_details.csv", "data//test2_deal_details.csv");
 			parser.readAndStoreData();
 			logger.info("Data seed: deals");
 			
-			parser = new DealItemsSeed(entityManager, "data//train_dealitems.csv", "data//test_dealitems.csv");
+			parser = new DealItemsSeed(entityManager, "data//train_dealitems.csv", "data//test_dealitems.csv", "data//test2_dealitem.csv");
 			parser.readAndStoreData();
 			logger.info("Data seed: deal items");
 			

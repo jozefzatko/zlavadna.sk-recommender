@@ -14,6 +14,9 @@ public class Activity {
 	private double discount;
 	private Date createdAt;
 	
+	private boolean inTrain;
+	private boolean inTest;
+	
 	public int getId() {
 		return id;
 	}
@@ -75,6 +78,20 @@ public class Activity {
 	}
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+	
+	public boolean isInTrain() {
+		return inTrain;
+	}
+	public void setInTrain(boolean inTrain) {
+		this.inTrain = inTrain;
+	}
+	
+	public boolean isInTest() {
+		return inTest;
+	}
+	public void setInTest(boolean inTest) {
+		this.inTest = inTest;
 	}
 
 }

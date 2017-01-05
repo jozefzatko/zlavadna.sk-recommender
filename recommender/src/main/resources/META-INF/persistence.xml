@@ -17,7 +17,7 @@
 		<properties>
 
 			<!-- JDBC properties -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/vi_recommender"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/vi_challenge_recommender"/>
 			<property name="javax.persistence.jdbc.user" value="postgres" />
 			<property name="javax.persistence.jdbc.password" value="password" />
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>

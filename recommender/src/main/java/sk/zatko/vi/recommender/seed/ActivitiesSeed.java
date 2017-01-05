@@ -14,25 +14,25 @@ import com.opencsv.CSVReader;
 public class ActivitiesSeed extends CSVParser {
 	
 	private static final String INSERT_QUERY =
-			"INSERT INTO activities (id, user_id, deal_item_id, deal_id, quantity, market_price, team_price, discount, created_at)\n" + 
-			"SELECT :id, :user_id, :deal_item_id, :deal_id, :quantity, :market_price, :team_price, :discount, :created_at\n" + 
+			"INSERT INTO activities (id, user_id, deal_item_id, deal_id, quantity, market_price, team_price, discount, created_at, in_train, in_test)\n" + 
+			"SELECT :id, :user_id, :deal_item_id, :deal_id, :quantity, :market_price, :team_price, :discount, :created_at, :in_train, :in_test\n" + 
 			"WHERE NOT EXISTS (SELECT * FROM activities WHERE id = :id)\n" + 
 			"AND EXISTS (SELECT * FROM dealitems WHERE id = :deal_item_id)\n" + 
 			"AND EXISTS (SELECT * FROM deals WHERE id = :deal_id)";
 	
-	public ActivitiesSeed(EntityManager entityManager, String trainCsvFile, String testCsvFile) throws FileNotFoundException, UnsupportedEncodingException {
+	public ActivitiesSeed(EntityManager entityManager, String train1CsvFile, String train2CsvFile) throws FileNotFoundException, UnsupportedEncodingException {
 		
-		super(entityManager, trainCsvFile, testCsvFile);
+		super(entityManager, train1CsvFile, train2CsvFile);
 	}
 
 	@Override
 	public void readAndStoreData() throws NumberFormatException, IOException {
 		
-		readAndStoreActivities(this.trainReader, this.entityManager);
-		readAndStoreActivities(this.testReader, this.entityManager);
+		readAndStoreActivities(this.train1Reader, this.entityManager, true);
+		readAndStoreActivities(this.train2Reader, this.entityManager, true);
 	}
 	
-	private void readAndStoreActivities(CSVReader reader, EntityManager entityManager) throws NumberFormatException, IOException {
+	private void readAndStoreActivities(CSVReader reader, EntityManager entityManager, boolean isTrain) throws NumberFormatException, IOException {
 		
 		EntityTransaction insertTransaction = entityManager.getTransaction();
 		
@@ -67,6 +67,14 @@ public class ActivitiesSeed extends CSVParser {
 										.setParameter("team_price", team_price)
 										.setParameter("discount", discount)
 										.setParameter("created_at", create_time);
+				
+				if (isTrain) {
+					insertQuery.setParameter("in_train", true);
+					insertQuery.setParameter("in_test", false);
+				} else {
+					insertQuery.setParameter("in_train", false);
+					insertQuery.setParameter("in_test", true);
+				}
 									
 				insertTransaction.begin();
 				insertQuery.executeUpdate();
