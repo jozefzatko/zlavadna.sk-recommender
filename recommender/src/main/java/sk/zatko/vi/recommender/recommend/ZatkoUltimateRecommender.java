@@ -27,7 +27,7 @@ public class ZatkoUltimateRecommender extends Recommender {
 			"WITH\r\n" + 
 			"dist_train_activities AS (\r\n" + 
 			"	SELECT DISTINCT deal_id, user_id FROM activities\r\n" + 
-			"	WHERE created_at < '2014-08-01 00:00:01'\r\n" + 
+			"	WHERE in_train = true\r\n" + 
 			")\r\n" + 
 			"SELECT a.deal_id, count(d.id) FROM deals d\r\n" + 
 			"JOIN dist_train_activities a ON d.id = a.deal_id\r\n" + 
@@ -43,8 +43,7 @@ public class ZatkoUltimateRecommender extends Recommender {
 			"	SELECT partner_id AS id FROM activities a\r\n" + 
 			"	JOIN deals d ON a.deal_id = d.id\r\n" + 
 			"	WHERE user_id = :user_id\r\n" +
-			"	AND created_at < '2014-08-01 00:00:01'\r\n" + 
-			"	AND d.in_test = true\r\n" + 
+			"	AND a.in_train = true\r\n" +
 			")\r\n" + 
 			"SELECT DISTINCT(d.id), d.partner_id FROM deals d\r\n" + 
 			"JOIN partner_ids p ON d.partner_id = p.id\r\n" + 
@@ -53,7 +52,12 @@ public class ZatkoUltimateRecommender extends Recommender {
 	
 	public static void main(String args[]) {
 		
-		new ZatkoUltimateRecommender().recommend(768851, 0, new Date(1406852020L * 1000L), 10);
+		List<Integer> recommended = new ZatkoUltimateRecommender().recommend(128, 0, new Date(1412164800L * 1000L), 10);
+		
+		for(Integer id : recommended) {
+			
+			System.out.println(id.intValue());
+		}
 		
 		System.exit(0);
 	}

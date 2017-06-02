@@ -15,12 +15,12 @@ public class CollaborativeRecommender extends Recommender {
 			"WITH\r\n" + 
 			"user_activities AS (\r\n" + 
 			"	SELECT DISTINCT deal_id, user_id FROM activities a\r\n" + 
-			"	WHERE created_at <= '2014-08-01 00:00:01'\r\n" + 
+			"	WHERE a.in_train = true" + 
 			"	AND user_id = :user_id\r\n" + 
 			"),\r\n" + 
 			"all_activities AS (\r\n" + 
 			"	SELECT DISTINCT deal_id, user_id FROM activities\r\n" + 
-			"	WHERE created_at <= '2014-08-01 00:00:00'\r\n" +
+			"	WHERE a.in_train = true\r\n" +
 			"	AND user_id <> :user_id\r\n" + 
 			"),\r\n" + 
 			"similiar_users AS(\r\n" + 
@@ -36,7 +36,7 @@ public class CollaborativeRecommender extends Recommender {
 			"JOIN deals d ON d.id = a.deal_id\r\n" + 
 			"JOIN similiar_users su ON su.user_id = a.user_id\r\n" + 
 			"WHERE NOT EXISTS (SELECT * FROM activities WHERE user_id = :user_id AND d.id = deal_id)\r\n" + 
-			"AND a.created_at >= '2014-08-01 00:00:01'\r\n" + 
+			"AND a.in_test = true\r\n" + 
 			"AND d.end_date >= :date\r\n" + 
 			"GROUP BY a.deal_id\r\n" + 
 			"ORDER BY count DESC\r\n" + 
